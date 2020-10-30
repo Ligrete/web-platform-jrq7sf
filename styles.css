@@ -1,3 +1,31 @@
-body {
-  background: orange;
+
+
+.container {
+  margin: 20px 0px;
+}
+
+.header {
+  display: flex;
+  margin: auto;
+}
+
+.content {
+  margin: auto;
+  width: 100%;
+}
+
+.map {
+  margin: auto;
+  background-color: rgb(35, 35, 35);
+  width: 100%;
+  min-height: 60vh;
+}
+
+rect.map-bg {
+  fill: #2d2d2d;
+}
+
+
+.marker1 {
+  fill: rgb(255, 170, 0);
 }

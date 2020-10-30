@@ -26,9 +26,38 @@
 
     <!-- content -->
     <div class="container">
+      <div class="container-fluid header">
+        <button type="button" class="btn btn-primary">Primary</button>
+        <button type="button" class="btn btn-secondary">Secondary</button>
+        <button type="button" class="btn btn-light">Light</button>
+<button type="button" class="btn btn-dark">Dark</button>
+      </div>
       <h1>Hello there!</h1>
-      <div class="container-fluid">
-      ...
+      <div class="container-fluid content">
+        <svg class="map"
+        width="100" height="100"
+        version="1.1"
+        baseProfile="full"
+        xmlns="http://www.w3.org/2000/svg">
+          <rect class="map-bg" width="100%" height="100%" />
+          <circle class="marker1" cx="150" cy="100" r="10" />
+        </svg>
+
+        <div style="width:400px;height:300px">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
+                <path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5"/>
+              </pattern>
+              <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                <rect width="80" height="80" fill="url(#smallGrid)"/>
+                <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1"/>
+              </pattern>
+            </defs>
+        
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+        </div>
       </div>
     </div>
     
