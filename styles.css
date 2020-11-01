@@ -7,11 +7,18 @@
 .header {
   display: flex;
   margin: auto;
+  justify-content: space-around;
+  align-items: center;
+  width: fit-content;
+  height: 40px;
 }
 
 .content {
   margin: auto;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .map {
@@ -29,3 +36,34 @@ rect.map-bg {
 .marker1 {
   fill: rgb(255, 170, 0);
 }
+
+.map-container {
+  background-color: #1d1d1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 30px 2vh;
+  position: relative;
+}
+
+.table-container {
+  margin: 30px auto;
+}
+
+canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.receivers {
+  background-color: #1d1d1d;
+}
+
+.header_el {
+  margin: auto 10px;
+}
+

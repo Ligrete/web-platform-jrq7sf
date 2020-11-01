@@ -1,28 +1,15 @@
-console.log('hello!')
+console.log('path.js')
 
 var scrH = 480;
 var scrW = 640;
 var offset = 50;
 
 
-let receivers = [
-    {
-        "name": "Yuka"
-    },
-    {
-        "name": "Miky"
-    },
-    {
-        "name": "Volga"
-    }
-];
 
 
 
-
-
-function draw() {
-
+function drawpath() {
+    // test
     var canvas = document.getElementById("canvas");
     if (canvas.getContext) {
       var ctx = canvas.getContext("2d");
@@ -52,30 +39,3 @@ function clearPage(context, canvas) {
     table.innerHTML = "";
 }
 
-function drawBoard(context, size){
-    var p = 0;
-    for (var x = 0; x <= scrW; x += size) {
-        context.moveTo(0.5 + x + p, p);
-        context.lineTo(0.5 + x + p, scrH + p);
-    }
-
-    for (var x = 0; x <= scrH; x += size) {
-        context.moveTo(p, 0.5 + x + p);
-        context.lineTo(scrW + p, 0.5 + x + p);
-    }
-    context.strokeStyle = "#424344";
-    context.stroke();
-    context.closePath();
-}
-
-// receivers coords tab
-function addCoords(rName, rX, rY) {
-    var table = document.getElementById("rtable");
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    cell1.innerHTML = rName;
-    cell2.innerHTML = rX;
-    cell3.innerHTML = rY;
-}
