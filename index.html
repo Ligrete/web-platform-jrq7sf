@@ -28,10 +28,12 @@
     <!-- content -->
     <div class="container">
       <div class="header">
-        <!-- <button type="button" class="btn btn-primary">Primary</button>
-        <button type="button" class="btn btn-secondary">Secondary</button> -->
         <button type="button" class="btn btn-light header_el" onclick="draw();">Генерация</button>
-        <button type="button" class="btn btn-dark header_el">Dark</button>
+        
+        <button type="button" class="btn btn-dark header_el" onclick="drawpath();">Dark</button>
+
+        <button type="button" class="btn btn-warning" onclick="start();">Warning</button>
+
         <div class="input-group flex-nowrap header_el">
           <div class="input-group-prepend">
             <span class="input-group-text" id="addon-wrapping">Скорость передатчика</span>
@@ -45,7 +47,8 @@
           <canvas class="receivers" id="canvas" width="640" height="480">
           </canvas>
           <canvas class="path" id="canvaspath" width="640" height="480">
-            
+          </canvas>
+          <canvas class="transmitter" id="canvasmove" width="640" height="480">
           </canvas>
         </div>
         <div class="table-container">
