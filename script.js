@@ -24,12 +24,12 @@ let receivers = [{
         "name": "Miky",
         "x": 0,
         "y": 0
+    },
+    {
+        "name": "Volga",
+        "x": 0,
+        "y": 0
     }
-    // {
-    //     "name": "Volga",
-    //     "x": 0,
-    //     "y": 0
-    // }
 ];
 
 var myGeo = {
@@ -66,17 +66,11 @@ function draw() {
             addCoords(receiver.name, receiver.x, receiver.y);
 
             //text
-            ctx.font = "12px serif";
-            ctx.fillStyle = "#dc3545";
+            ctx.font = "14px serif";
+            ctx.fillStyle = "#fd7e14";
             ctx.fillText(receiver.name, receiver.x - 10, receiver.y + 20);
         }
 
-        for (const key in receivers) {
-            if (key!=0) {
-                dist = calcDistance(receivers[key-1],receivers[1]);
-                console.log("Расстояние между приемниками: ", dist);
-            }
-        }
     }
 }
 
@@ -89,47 +83,45 @@ function drawpath() {
         clearPage(ctx, canvas);
 
 
-        for (point of points) {
-            console.log('drawpath: ' + point.name + " " + point.x + " " + point.y);
-            //target pos
-            ctx.beginPath();
-            ctx.fillStyle = "red";
-            var receiverX = point.x;
-            var receiverY = point.y;
-            ctx.arc(receiverX, receiverY, 4, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.fill();
+        // for (point of points) {
+        //     //target pos
+        //     ctx.beginPath();
+        //     ctx.fillStyle = "red";
+        //     var receiverX = point.x;
+        //     var receiverY = point.y;
+        //     ctx.arc(receiverX, receiverY, 4, 0, Math.PI * 2, true);
+        //     ctx.closePath();
+        //     ctx.fill();
 
-            //text
-            ctx.font = "12px serif";
-            ctx.fillStyle = "#dc3545";
-            ctx.fillText(point.name, point.x - 10, point.y + 20);
-        }
+        //     //text
+        //     ctx.font = "12px serif";
+        //     ctx.fillStyle = "#dc3545";
+        //     ctx.fillText(point.name, point.x - 10, point.y + 20);
+        // }
 
-        var i = 0;
-        var prevX = -100;
-        var prevY = -100;
+        // var i = 0;
+        // var prevX = -100;
+        // var prevY = -100;
 
 
-        for (point of points) {
+        // for (point of points) {
 
-            console.log('test generator: ' + prevX + ' - ' + prevY);
-            if (i >= 0 && prevY > 0 && prevX > 0) {
-                ctx.beginPath();
-                ctx.strokeStyle = "#dc354582";
-                ctx.lineWidth = 5;
-                ctx.moveTo(prevX, prevY);
-                ctx.lineTo(point.x, point.y);
-                ctx.closePath();
-                ctx.stroke();
-                prevX = point.x;
-                prevY = point.y;
-            } else {
-                prevX = point.x;
-                prevY = point.y;
-            }
-            i++;
-        }
+        //     if (i >= 0 && prevY > 0 && prevX > 0) {
+        //         ctx.beginPath();
+        //         ctx.strokeStyle = "#dc354582";
+        //         ctx.lineWidth = 5;
+        //         ctx.moveTo(prevX, prevY);
+        //         ctx.lineTo(point.x, point.y);
+        //         ctx.closePath();
+        //         ctx.stroke();
+        //         prevX = point.x;
+        //         prevY = point.y;
+        //     } else {
+        //         prevX = point.x;
+        //         prevY = point.y;
+        //     }
+        //     i++;
+        // }
         start();
     }
 }
@@ -187,13 +179,11 @@ function genTargets(count) {
 
 function start() {
     // test
-    console.log('start');
     var canvas = document.getElementById("canvaspath");
     if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
         for (var i = 0; i <= points.length; i++) {
             if (i == 0) {
-                console.log('start: trigger - ' + i);
                 ctx.beginPath();
                 ctx.fillStyle = "#ffc107";
                 var receiverX = points[i].x;
@@ -208,6 +198,7 @@ function start() {
 
         for (receiver of receivers) {
             var radius = calcDistance(myGeo, receiver);
+            ctx.lineWidth = 5;
             ctx.strokeStyle = "#20c99714";
             ctx.arc(receiver.x, receiver.y, radius, 0, Math.PI * 2, true);
             ctx.stroke();
@@ -218,7 +209,9 @@ function start() {
 
 
         // геометрия
-        calcMiddle(receivers[0], receivers[1], myGeo);
+        for (var i = 1; i<receivers.length; i++) {
+            calcMiddle(receivers[i-1], receivers[i], myGeo);
+        }
     }
 }
 

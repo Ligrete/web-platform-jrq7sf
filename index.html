@@ -3,6 +3,8 @@
     <meta charset="UTF-8">
     <script src="script.js"></script>
     <script src="path.js"></script>
+    <script src="js/math.js"></script>
+    <script src="js/filemanager.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="styles.css"> 
@@ -11,16 +13,16 @@
   <body onload="draw();">
     <!-- header -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">@</a>
+      <a class="navbar-brand" href="#"><img class="icon-svg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/YandexNavigatorLogo.svg/1200px-YandexNavigatorLogo.svg.png" alt=""></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link active" href="#"> Задание <span class="sr-only">(current)</span></a>
-          <!-- <a class="nav-link" href="#">Features</a>
-          <a class="nav-link" href="#">Pricing</a>
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
+          <a class="nav-link active" href="#">  <h5>Map Nav</h5> <span class="sr-only">(current)</span></a>
+          <button type="button" class="btn  btn-danger" data-toggle="modal" data-target="#exampleModal">
+            Задание
+          </button>
         </div>
       </div>
     </nav>
@@ -39,6 +41,11 @@
             <span class="input-group-text" id="addon-wrapping">Скорость передатчика</span>
           </div>
           <input type="text" class="form-control" placeholder="km/h" aria-label="Username" aria-describedby="addon-wrapping">
+        </div>
+      </div>
+      <div class="header">
+        <div class="alert alert-primary" role="alert">
+          <input type="file" onchange="showFile(this)">
         </div>
       </div>
       <div class="container-fluid content">
@@ -66,6 +73,82 @@
           
  
           </table>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">О задании</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="container">
+            
+          <div class="modal-body">
+
+            <h4>Маркеры</h4>
+            
+            <div class="container-fluid">
+              <div class="line-marker">
+                <div class="icon-svg">
+                  <svg viewBox="0 0 20 20" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="10" fill="#ffee00"/>
+                  </svg>
+                </div>
+                <div class="icon-text">-</div>
+                <div class="icon-text">маркер радиопередатчика</div>
+              </div>
+  
+              <div class="line-marker">
+                <div class="icon-svg">
+                  <svg viewBox="0 0 20 20" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="10" fill="#ff9d00"/>
+                  </svg>
+                </div>
+                <div class="icon-text">-</div>
+                <div class="icon-text">маркер радиоприемников</div>
+              </div>
+
+                
+              <div class="line-marker">
+                <div class="icon-svg">
+                  <svg viewBox="0 0 20 20" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="10" fill="#00aeff"/>
+                  </svg>
+                </div>
+                <div class="icon-text">-</div>
+                <div class="icon-text">конечные/промежуточные точки перемещения цели</div>
+              </div>
+
+
+
+
+            </div>
+          </div>
+
+          <div class="modal-body">
+            <h4>Маркеры</h4>
+            <div class="container-fluid">
+              На плоскости расположены 3 статичных радиоприемника (гарантируется, что они не лежат на одной прямой) и один движущийся радиопередатчик. Через равные промежутки времени (1 секунда) радиоприемники замеряют время пролета сигнала от радиопередатчика до них (скорость сигнала считать равной 1000 км/сек). Необходимо по имеющимся координатам радиоприемников и по их показаниям восстановить траекторию движения радиопередатчика. Показания радиоприемников могут иметь погрешность.
+Требуется разработать одностраничное веб-приложение, в которое загружается файл через браузер с показаниями радиоприемников, (формат файла описан далее). По нажатию специальной кнопки, в браузере рисуется положение радиоприемников и траектория движения радиопередатчика в виде ломаной линии. Координаты положения радиоприемника выделяются точками на линии и выводятся отдельным списком.
+Задача должна быть решена средствами JavaScript, все вычисления, касающиеся решения задачи, должны производиться в браузере. Ограничений по визуализации и дизайну нет. Главное, чтобы происходящее в ней было понятно человеку, прочитавшему этот документ.
+Следует учитывать, что на выходе ожидается лишь приблизительная траектория, в которой допускается погрешность, ввиду шумных входных данных.
+Формат входных данных - текстовый:
+x1,y1,x2,y2,x3,y3 : координаты статичных приемников
+dt1,dt2,dt3 : время прохождения сигнала до трех точек, 1 измерение
+…
+d1,d2,d3 : время прохождения сигнала до трех точек, n измерение
+            </div>
+          </div>
+          </div>
         </div>
       </div>
     </div>

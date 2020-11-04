@@ -16,11 +16,10 @@
 
 .header {
   display: flex;
-  margin: auto;
   justify-content: space-around;
   align-items: center;
   width: fit-content;
-  height: 40px;
+  margin: 20px auto auto;
 }
 
 .content {
@@ -86,3 +85,18 @@ canvas#canvasmove {
   margin: auto 10px;
 }
 
+.icon-svg {
+  width: 25px;
+  height: 25px;
+}
+
+.icon-text {
+  margin: 0px 0px 0px 10px;
+}
+
+.line-marker {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin: 10px auto;
+}
