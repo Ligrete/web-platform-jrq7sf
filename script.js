@@ -1,27 +1,41 @@
 var scrH = 480;
 var scrW = 640;
-var offset = 50;
+var offset = 100;
 
 var tsmitterX = 0;
 var tsmitterY = 0;
 
-var points = [{name: '', x: 111, y: 111}];
+var points = [{
+    name: '',
+    x: 111,
+    y: 111
+}];
 
 
 var table; // таблица координат приемников
 
 
 let receivers = [{
-        "name": "Yuka"
+        "name": "Yuka",
+        "x": 0,
+        "y": 0
     },
     {
-        "name": "Miky"
-    },
-    {
-        "name": "Volga"
+        "name": "Miky",
+        "x": 0,
+        "y": 0
     }
+    // {
+    //     "name": "Volga",
+    //     "x": 0,
+    //     "y": 0
+    // }
 ];
 
+var myGeo = {
+    x: 0,
+    y: 0
+};
 
 
 
@@ -47,7 +61,21 @@ function draw() {
             ctx.arc(receiverX, receiverY, 5, 0, Math.PI * 2, true);
             ctx.closePath();
             ctx.fill();
-            addCoords(receiver.name, receiverX, receiverY);
+            receiver.x = receiverX;
+            receiver.y = receiverY;
+            addCoords(receiver.name, receiver.x, receiver.y);
+
+            //text
+            ctx.font = "12px serif";
+            ctx.fillStyle = "#dc3545";
+            ctx.fillText(receiver.name, receiver.x - 10, receiver.y + 20);
+        }
+
+        for (const key in receivers) {
+            if (key!=0) {
+                dist = calcDistance(receivers[key-1],receivers[1]);
+                console.log("Расстояние между приемниками: ", dist);
+            }
         }
     }
 }
@@ -75,7 +103,7 @@ function drawpath() {
             //text
             ctx.font = "12px serif";
             ctx.fillStyle = "#dc3545";
-            ctx.fillText( point.name , point.x, point.y + 20);
+            ctx.fillText(point.name, point.x - 10, point.y + 20);
         }
 
         var i = 0;
@@ -84,11 +112,11 @@ function drawpath() {
 
 
         for (point of points) {
-            
-            console.log('test generator: '+prevX +' - '+prevY);
-            if (i>=0 && prevY>0 && prevX>0) {
+
+            console.log('test generator: ' + prevX + ' - ' + prevY);
+            if (i >= 0 && prevY > 0 && prevX > 0) {
                 ctx.beginPath();
-                ctx.strokeStyle = "#dc354582"; 
+                ctx.strokeStyle = "#dc354582";
                 ctx.lineWidth = 5;
                 ctx.moveTo(prevX, prevY);
                 ctx.lineTo(point.x, point.y);
@@ -146,7 +174,7 @@ function addCoords(rName, rX, rY) {
 
 
 function genTargets(count) {
-    points.splice(0,points.length);
+    points.splice(0, points.length);
     for (let index = 0; index < count; index++) {
         points.push({
             name: "point " + index,
@@ -161,7 +189,7 @@ function start() {
     // test
     console.log('start');
     var canvas = document.getElementById("canvaspath");
-    if (canvas.getContext) {    
+    if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
         for (var i = 0; i <= points.length; i++) {
             if (i == 0) {
@@ -170,12 +198,30 @@ function start() {
                 ctx.fillStyle = "#ffc107";
                 var receiverX = points[i].x;
                 var receiverY = points[i].y;
+                myGeo.x = receiverX;
+                myGeo.y = receiverY;
                 ctx.arc(receiverX, receiverY, 6, 0, Math.PI * 2, true);
                 ctx.closePath();
                 ctx.fill();
             }
         }
+
+        for (receiver of receivers) {
+            var radius = calcDistance(myGeo, receiver);
+            ctx.strokeStyle = "#20c99714";
+            ctx.arc(receiver.x, receiver.y, radius, 0, Math.PI * 2, true);
+            ctx.stroke();
+            ctx.closePath();
+            //ctx.fill();
+            console.log("Маяк: ", receiver.name, "Расстояние до передатчика: " + radius);
+        }
+
+
+        // геометрия
+        calcMiddle(receivers[0], receivers[1], myGeo);
     }
 }
+
+
 
 genTargets(3);
