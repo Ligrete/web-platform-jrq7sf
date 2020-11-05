@@ -34,10 +34,49 @@ let receivers = [{
 
 var myGeo = {
     x: 0,
-    y: 0
+    y: 0,
+    sx: 0,
+    sy: 0
 };
 
+function restartCalc() {
+    clearPages();
 
+    clearTimeout(intervalCalc);
+    this.myGeo = {
+        x: 0,
+        y: 0,
+        sx: 0,
+        sy: 0
+    };
+
+    this.receivers = [{
+            "name": "Yuka",
+            "x": 0,
+            "y": 0
+        },
+        {
+            "name": "Miky",
+            "x": 0,
+            "y": 0
+        },
+        {
+            "name": "Volga",
+            "x": 0,
+            "y": 0
+        }
+    ];
+
+    this.points = [{
+        name: '',
+        x: 111,
+        y: 111
+    }];
+
+    draw();
+
+
+}
 
 
 function draw() {
@@ -71,6 +110,7 @@ function draw() {
         }
 
         drawpath();
+        start();
 
     }
 }
@@ -82,9 +122,6 @@ function drawpath() {
     var canvas = document.getElementById("canvaspath");
     if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
-        clearPage(ctx, canvas);
-
-
         for (point of points) {
             //target pos
             ctx.beginPath();
@@ -124,48 +161,8 @@ function drawpath() {
             }
             i++;
         }
-        start();
     }
 }
-
-function clearPage(context, canvas) {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    var w = canvas.width;
-    canvas.width = 1;
-    canvas.width = w;
-    drawBoard(context, 20);
-}
-
-function drawBoard(context, size) {
-    var p = 0;
-    for (var x = 0; x <= scrW; x += size) {
-        context.moveTo(0.5 + x + p, p);
-        context.lineTo(0.5 + x + p, scrH + p);
-    }
-
-    for (var x = 0; x <= scrH; x += size) {
-        context.moveTo(p, 0.5 + x + p);
-        context.lineTo(scrW + p, 0.5 + x + p);
-    }
-    context.strokeStyle = "#424344";
-    context.stroke();
-    context.closePath();
-}
-
-// receivers coords tab
-function addCoords(rName, rX, rY) {
-    var table = document.getElementById("rtable");
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    cell1.innerHTML = rName;
-    cell2.innerHTML = rX;
-    cell3.innerHTML = rY;
-}
-
-
-
 
 
 function genTargets(count) {
@@ -184,7 +181,7 @@ function start() {
     console.log('start.js');
     // test
     var canvas = document.getElementById("canvaspath");
-    if (canvas.getContext) {
+    if (canvas) {
         var ctx = canvas.getContext("2d");
         for (var i = 0; i <= points.length; i++) {
             if (i == 0) {
@@ -194,6 +191,8 @@ function start() {
                 var receiverY = points[i].y;
                 myGeo.x = receiverX;
                 myGeo.y = receiverY;
+                myGeo.sx = receiverX;
+                myGeo.sy = receiverY;
                 ctx.arc(receiverX, receiverY, 6, 0, Math.PI * 2, true);
                 ctx.closePath();
                 ctx.fill();
@@ -202,7 +201,7 @@ function start() {
 
         for (receiver of receivers) {
             var radius = calcDistance(myGeo, receiver);
-            ctx.lineWidth = 5;
+            ctx.lineWidth = 3;
             ctx.strokeStyle = "#20c99714";
             ctx.arc(receiver.x, receiver.y, radius, 0, Math.PI * 2, true);
             ctx.stroke();
@@ -212,13 +211,141 @@ function start() {
         }
 
 
+
+
+
         // геометрия
-        for (var i = 1; i<receivers.length; i++) {
-            calcMiddle(receivers[i-1], receivers[i], myGeo);
+        for (var i = 1; i < receivers.length; i++) {
+            calcMiddle(receivers[i - 1], receivers[i], myGeo);
         }
+
+        setTimeout(() => {
+            moveObj(myGeo, 0);
+            console.log('start move');
+        }, 2000);
+
     }
 }
 
+function drawObj(target) {
+
+
+    var canvas = document.getElementById("canvaspath");
+    if (canvas) {
+        var ctx = canvas.getContext("2d");
+        clearPage(ctx, canvas);
+        ctx.beginPath();
+        ctx.arc(target.x, target.y, 10, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffc107";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+
+    for (receiver of receivers) {
+        var radius = calcDistance(myGeo, receiver);
+        ctx.beginPath();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#20c99714";
+        ctx.arc(receiver.x, receiver.y, radius, 0, Math.PI * 2, true);
+        ctx.stroke();
+        ctx.closePath();
+        //ctx.fill();
+    }
+
+
+    for (receiver of receivers) {
+        ctx.beginPath();
+        ctx.fillStyle = "#fd7e14";
+        ctx.arc(receiver.x, receiver.y, 5, 0, Math.PI * 2, true);
+        ctx.fill();
+        ctx.closePath();
+
+
+        //text
+        ctx.font = "14px serif";
+        ctx.fillStyle = "#fd7e14";
+        ctx.fillText(receiver.name, receiver.x - 10, receiver.y + 20);
+    }
+
+    var i = 0;
+    var prevX = -100;
+    var prevY = -100;
+
+
+    for (point of points) {
+
+        ctx.beginPath();
+        ctx.fillStyle = "red";
+        ctx.arc(point.x, point.y, 4, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fill();
+
+        //text
+        ctx.font = "12px serif";
+        ctx.fillStyle = "#dc3545";
+        ctx.fillText(point.name, point.x - 10, point.y + 20);
+
+        if (i >= 0 && prevY > 0 && prevX > 0) {
+            ctx.beginPath();
+            ctx.strokeStyle = "#dc354582";
+            ctx.lineWidth = 5;
+            ctx.moveTo(prevX, prevY);
+            ctx.lineTo(point.x, point.y);
+            ctx.closePath();
+            ctx.stroke();
+            prevX = point.x;
+            prevY = point.y;
+        } else {
+            prevX = point.x;
+            prevY = point.y;
+        }
+        i++;
+    }
+
+
+}
+
+
+
+var intervalCalc;
+
+
+
+function moveObj(startPos, i) {
+
+    clearPages();
+    for (var index = 1; index < receivers.length; index++) {
+        calcMiddle(receivers[index - 1], receivers[index], myGeo);
+    }
+
+    var dx, dy;
+    if (myGeo.x < scrW && myGeo.x >= 0 && myGeo.y < scrH && myGeo.y >= 0) {
+        if (points && points[i] && points[i].x != Math.round(startPos.x)) {
+            dx = points[i].x - startPos.sx;
+            dy = points[i].y - startPos.sy;
+            startPos.x += dx * 0.01;
+            startPos.y += dy * 0.01;
+            console.log("dx,dy: ", dx, dy);
+            console.log(startPos.x, startPos.y);
+
+        } else if (i < points.length) {
+            startPos.sx = startPos.x;
+            startPos.sy = startPos.y;
+            i++;
+            dx = 0;
+            dy = 0;
+        }
+    }
+
+    drawObj(startPos);
+
+    intervalCalc = setTimeout(() => {
+        if (i < points.length) {
+            moveObj(myGeo, i);
+        }
+    }, 100);
+}
 
 
 draw();

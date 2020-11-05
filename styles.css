@@ -28,6 +28,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .map {
@@ -52,12 +53,15 @@ rect.map-bg {
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 30px 2vh;
+  margin: 30px 10px;
   position: relative;
+  height: 480px;
+  max-width: 640px;
 }
 
 .table-container {
-  margin: 30px auto;
+  margin: 30px 10px;
+  width: max-content;
 }
 
 canvas {
@@ -79,6 +83,10 @@ canvas#canvaspath {
 
 canvas#canvasmove {
   z-index: 3;
+}
+
+canvas#prediction {
+  z-index: 4;
 }
 
 .header_el {
@@ -103,4 +111,11 @@ canvas#canvasmove {
 
 .scroller {
   overflow: scroll;
+}
+
+.alertm { 
+  position: relative;
+  padding: .75rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
 }

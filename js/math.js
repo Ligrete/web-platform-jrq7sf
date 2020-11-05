@@ -40,21 +40,23 @@ function calcMiddle(firstPoint, secondPoint, target) {
     // console.log(d, "- distance between two receivers");
     // console.log(a, "- distance to the point of intersection between two circles");
     // console.log(Math.sqrt(h), "- distance between two receivers 'p2' point");
-    console.log("Координаты передатчика вычислена: ","от "+firstPoint.name+" и "+secondPoint.name+" - ", p3x1, p3y1);
-    console.log("Координаты передатчика вычислена: ","от "+firstPoint.name+" и "+secondPoint.name+" - ", p3x2, p3y2);
-    console.log("Координаты передатчика на самом деле: ", target.x, target.y);
+    // console.log("Координаты передатчика вычислена: ","от "+firstPoint.name+" и "+secondPoint.name+" - ", p3x1, p3y1);
+    // console.log("Координаты передатчика вычислена: ","от "+firstPoint.name+" и "+secondPoint.name+" - ", p3x2, p3y2);
+    // console.log("Координаты передатчика на самом деле: ", target.x, target.y);
 
     var canvas = document.getElementById("canvasmove");
-    if (canvas.getContext) {
+    if (canvas) {
+        var radius = 6;
         var ctx = canvas.getContext("2d");
-        clearPage(ctx, canvas);
-        ctx.fillStyle = "#007bffbf";
-        ctx.arc(p3x1, p3y1, 3, 0, Math.PI * 2, true);
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(0, 123, 255, 0.37)";
+        ctx.arc(p3x1, p3y1, radius, 0, Math.PI * 2, true);
         ctx.fill();
         ctx.closePath();
 
-        ctx.fillStyle = "#007bffbf";
-        ctx.arc(p3x2, p3y2, 3, 0, Math.PI * 2, true);
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(0, 123, 255, 0.37)";
+        ctx.arc(p3x2, p3y2, radius, 0, Math.PI * 2, true);
         ctx.fill();
         ctx.closePath();
     }
