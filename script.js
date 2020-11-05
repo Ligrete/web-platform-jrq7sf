@@ -42,18 +42,17 @@ var myGeo = {
 
 function draw() {
 
+    console.log('draw.js');
+
     var canvas = document.getElementById("canvas");
-    if (canvas.getContext) {
+    if (canvas) {
         var ctx = canvas.getContext("2d");
-        canvas.getContext("2d").clearRect(0, 0, scrW, scrH);
+        // canvas.getContext("2d").clearRect(0, 0, scrW, scrH);
         clearPage(ctx, canvas);
-        //clear Table
         table = document.getElementById("rtable");
         if (table) {
             table.innerHTML = "";
         }
-        drawBoard(ctx, 20);
-
         for (receiver of receivers) {
             ctx.fillStyle = "#fd7e14";
             var receiverX = Math.floor(Math.random() * (scrW - offset)) + offset / 2;
@@ -71,10 +70,13 @@ function draw() {
             ctx.fillText(receiver.name, receiver.x - 10, receiver.y + 20);
         }
 
+        drawpath();
+
     }
 }
 
 function drawpath() {
+    console.log('drawpath.js');
     genTargets(3);
     // test
     var canvas = document.getElementById("canvaspath");
@@ -83,45 +85,45 @@ function drawpath() {
         clearPage(ctx, canvas);
 
 
-        // for (point of points) {
-        //     //target pos
-        //     ctx.beginPath();
-        //     ctx.fillStyle = "red";
-        //     var receiverX = point.x;
-        //     var receiverY = point.y;
-        //     ctx.arc(receiverX, receiverY, 4, 0, Math.PI * 2, true);
-        //     ctx.closePath();
-        //     ctx.fill();
+        for (point of points) {
+            //target pos
+            ctx.beginPath();
+            ctx.fillStyle = "red";
+            var receiverX = point.x;
+            var receiverY = point.y;
+            ctx.arc(receiverX, receiverY, 4, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
 
-        //     //text
-        //     ctx.font = "12px serif";
-        //     ctx.fillStyle = "#dc3545";
-        //     ctx.fillText(point.name, point.x - 10, point.y + 20);
-        // }
+            //text
+            ctx.font = "12px serif";
+            ctx.fillStyle = "#dc3545";
+            ctx.fillText(point.name, point.x - 10, point.y + 20);
+        }
 
-        // var i = 0;
-        // var prevX = -100;
-        // var prevY = -100;
+        var i = 0;
+        var prevX = -100;
+        var prevY = -100;
 
 
-        // for (point of points) {
+        for (point of points) {
 
-        //     if (i >= 0 && prevY > 0 && prevX > 0) {
-        //         ctx.beginPath();
-        //         ctx.strokeStyle = "#dc354582";
-        //         ctx.lineWidth = 5;
-        //         ctx.moveTo(prevX, prevY);
-        //         ctx.lineTo(point.x, point.y);
-        //         ctx.closePath();
-        //         ctx.stroke();
-        //         prevX = point.x;
-        //         prevY = point.y;
-        //     } else {
-        //         prevX = point.x;
-        //         prevY = point.y;
-        //     }
-        //     i++;
-        // }
+            if (i >= 0 && prevY > 0 && prevX > 0) {
+                ctx.beginPath();
+                ctx.strokeStyle = "#dc354582";
+                ctx.lineWidth = 5;
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(point.x, point.y);
+                ctx.closePath();
+                ctx.stroke();
+                prevX = point.x;
+                prevY = point.y;
+            } else {
+                prevX = point.x;
+                prevY = point.y;
+            }
+            i++;
+        }
         start();
     }
 }
@@ -131,6 +133,7 @@ function clearPage(context, canvas) {
     var w = canvas.width;
     canvas.width = 1;
     canvas.width = w;
+    drawBoard(context, 20);
 }
 
 function drawBoard(context, size) {
@@ -178,6 +181,7 @@ function genTargets(count) {
 
 
 function start() {
+    console.log('start.js');
     // test
     var canvas = document.getElementById("canvaspath");
     if (canvas.getContext) {
@@ -217,4 +221,4 @@ function start() {
 
 
 
-genTargets(3);
+draw();

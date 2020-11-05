@@ -100,3 +100,7 @@ canvas#canvasmove {
   flex-direction: row;
   margin: 10px auto;
 }
+
+.scroller {
+  overflow: scroll;
+}

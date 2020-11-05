@@ -1,4 +1,3 @@
-console.log('path.js')
 
 
 
