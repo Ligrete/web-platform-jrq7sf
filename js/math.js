@@ -1,5 +1,3 @@
-
-
 function calcDistance(firstPos, secondPos) {
     if (secondPos.x && secondPos.y && firstPos.x && firstPos.y) {
         var distance = Math.sqrt((secondPos.x - firstPos.x) ** 2 + (secondPos.y - firstPos.y) ** 2);
@@ -12,6 +10,13 @@ function calcDistance(firstPos, secondPos) {
 //http://algolist.ru/maths/geom/intersect/circlecircle2d.php
 
 function calcMiddle(firstPoint, secondPoint, target) {
+
+    var output = {
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 0
+    };
     // a = (r0^2 - r1^2 + d^2 ) / (2d)
     // h^2 = r0^2 - a^2
     // P2 = P0 + a ( P1 - P0 ) / d
@@ -43,21 +48,30 @@ function calcMiddle(firstPoint, secondPoint, target) {
     // console.log("Координаты передатчика вычислена: ","от "+firstPoint.name+" и "+secondPoint.name+" - ", p3x1, p3y1);
     // console.log("Координаты передатчика вычислена: ","от "+firstPoint.name+" и "+secondPoint.name+" - ", p3x2, p3y2);
     // console.log("Координаты передатчика на самом деле: ", target.x, target.y);
+    
+    output.x1 = p3x1;
+    output.y1 = p3y1;
+    output.x2 = p3x2;
+    output.y2 = p3y2;
+
 
     var canvas = document.getElementById("canvasmove");
     if (canvas) {
-        var radius = 6;
+        var radius = 2;
         var ctx = canvas.getContext("2d");
         ctx.beginPath();
-        ctx.fillStyle = "rgba(0, 123, 255, 0.37)";
+        ctx.fillStyle = "rgba(0, 123, 255, 1)";
         ctx.arc(p3x1, p3y1, radius, 0, Math.PI * 2, true);
         ctx.fill();
         ctx.closePath();
 
         ctx.beginPath();
-        ctx.fillStyle = "rgba(0, 123, 255, 0.37)";
+        ctx.fillStyle = "rgba(0, 123, 255, 1)";
         ctx.arc(p3x2, p3y2, radius, 0, Math.PI * 2, true);
         ctx.fill();
         ctx.closePath();
     }
+
+
+    return output
 }

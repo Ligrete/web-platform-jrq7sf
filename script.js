@@ -239,6 +239,14 @@ function drawObj(target) {
         ctx.fillStyle = "#ffc107";
         ctx.fill();
         ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(geoTotal.x, geoTotal.y, 7, 0, Math.PI * 2);
+        ctx.fillStyle = "green";
+        ctx.fill();
+        ctx.closePath();
+
+        
     }
 
 
@@ -309,14 +317,52 @@ function drawObj(target) {
 
 
 var intervalCalc;
-
+var geoTotal = {
+    x: 0,
+    y: 0
+}
 
 
 function moveObj(startPos, i) {
 
     clearPages();
+
+    var fMid;
+    var sMid;
+    var fMid1;
+    var fMid2;
+    var sMid1;
+    var sMid2;
+    var total = {
+        x: 0,
+        y: 0
+    };
     for (var index = 1; index < receivers.length; index++) {
-        calcMiddle(receivers[index - 1], receivers[index], myGeo);
+        if (index == 1) {
+            fMid = calcMiddle(receivers[index - 1], receivers[index], myGeo);
+        } else if (index == 2) {
+            sMid = calcMiddle(receivers[index - 1], receivers[index], myGeo);
+        }
+    }
+    if (fMid && sMid) {
+        fMid1 = Math.round((fMid.x1 + fMid.y1) / 2);
+        fMid2 = Math.round((fMid.x2 + fMid.y2) / 2);
+        sMid1 = Math.round((sMid.x1 + sMid.y1) / 2);
+        sMid2 = Math.round((sMid.x2 + sMid.y2) / 2);
+
+        if (fMid1 == sMid1 && fMid1 != sMid2) {
+            geoTotal.x = fMid.x1;
+            geoTotal.y = fMid.y1;
+        } else if (fMid1 == sMid2 && fMid1 != sMid1) {
+            geoTotal.x = fMid.x1;
+            geoTotal.y = fMid.y1;
+        } else if (fMid1 != sMid2 && fMid1 != sMid1) {
+            geoTotal.x = fMid.x2;
+            geoTotal.y = fMid.y2;
+        }
+        console.log("Средние значения: ", fMid1, fMid2, sMid1, sMid2);
+        console.log("Среднее значение передатчика: ", Math.round((myGeo.x + myGeo.y) / 2));
+        console.log("Вычисленное местоположение: ", geoTotal.x, geoTotal.y);
     }
 
     var dx, dy;
@@ -326,8 +372,8 @@ function moveObj(startPos, i) {
             dy = points[i].y - startPos.sy;
             startPos.x += dx * 0.01;
             startPos.y += dy * 0.01;
-            console.log("dx,dy: ", dx, dy);
-            console.log(startPos.x, startPos.y);
+            // console.log("dx,dy: ", dx, dy);
+            // console.log(startPos.x, startPos.y);
 
         } else if (i < points.length) {
             startPos.sx = startPos.x;
