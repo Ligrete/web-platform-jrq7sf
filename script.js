@@ -101,7 +101,7 @@ function draw() {
             ctx.fill();
             receiver.x = receiverX;
             receiver.y = receiverY;
-            addCoords(receiver.name, receiver.x, receiver.y);
+            addCoords("rtable", receiver.name, receiver.x, receiver.y);
 
             //text
             ctx.font = "14px serif";
@@ -240,76 +240,103 @@ function drawObj(target) {
         ctx.fill();
         ctx.closePath();
 
+
+
+
+        for (receiver of receivers) {
+            var radius = calcDistance(myGeo, receiver);
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "#FF7C00"; //#ff4d00
+            // ctx.strokeStyle = "#20c99714"; 
+            ctx.arc(receiver.x, receiver.y, radius, 0, Math.PI * 2, true);
+            ctx.stroke();
+            ctx.closePath();
+            //ctx.fill();
+        }
+
+
+        for (receiver of receivers) {
+            ctx.beginPath();
+            ctx.fillStyle = "#FF7C00";
+            ctx.arc(receiver.x, receiver.y, 5, 0, Math.PI * 2, true);
+            ctx.fill();
+            ctx.closePath();
+
+
+            //text
+            ctx.font = "14px serif";
+            ctx.fillStyle = "#FF7C00";
+            ctx.fillText(receiver.name, receiver.x - 10, receiver.y + 20);
+        }
+
+        var i = 0;
+        var prevX = -100;
+        var prevY = -100;
+
+
+        for (point of points) {
+
+            ctx.beginPath();
+            ctx.fillStyle = "red";
+            ctx.arc(point.x, point.y, 4, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+
+            //text
+            ctx.font = "12px serif";
+            ctx.fillStyle = "#dc3545";
+            ctx.fillText(point.name, point.x - 10, point.y + 20);
+
+            if (i >= 0 && prevY > 0 && prevX > 0) {
+                ctx.beginPath();
+                ctx.strokeStyle = "#dc354582";
+                ctx.lineWidth = 5;
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(point.x, point.y);
+                ctx.closePath();
+                ctx.stroke();
+                prevX = point.x;
+                prevY = point.y;
+            } else {
+                prevX = point.x;
+                prevY = point.y;
+            }
+            i++;
+        }
+
         ctx.beginPath();
         ctx.arc(geoTotal.x, geoTotal.y, 7, 0, Math.PI * 2);
-        ctx.fillStyle = "green";
-        ctx.fill();
-        ctx.closePath();
-
-        
-    }
-
-
-    for (receiver of receivers) {
-        var radius = calcDistance(myGeo, receiver);
-        ctx.beginPath();
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "#20c99714";
-        ctx.arc(receiver.x, receiver.y, radius, 0, Math.PI * 2, true);
-        ctx.stroke();
-        ctx.closePath();
-        //ctx.fill();
-    }
-
-
-    for (receiver of receivers) {
-        ctx.beginPath();
-        ctx.fillStyle = "#fd7e14";
-        ctx.arc(receiver.x, receiver.y, 5, 0, Math.PI * 2, true);
+        ctx.fillStyle = "#03FF00";
         ctx.fill();
         ctx.closePath();
 
 
-        //text
-        ctx.font = "14px serif";
-        ctx.fillStyle = "#fd7e14";
-        ctx.fillText(receiver.name, receiver.x - 10, receiver.y + 20);
-    }
-
-    var i = 0;
-    var prevX = -100;
-    var prevY = -100;
-
-
-    for (point of points) {
-
-        ctx.beginPath();
-        ctx.fillStyle = "red";
-        ctx.arc(point.x, point.y, 4, 0, Math.PI * 2, true);
-        ctx.closePath();
-        ctx.fill();
-
-        //text
-        ctx.font = "12px serif";
-        ctx.fillStyle = "#dc3545";
-        ctx.fillText(point.name, point.x - 10, point.y + 20);
-
-        if (i >= 0 && prevY > 0 && prevX > 0) {
-            ctx.beginPath();
-            ctx.strokeStyle = "#dc354582";
-            ctx.lineWidth = 5;
-            ctx.moveTo(prevX, prevY);
-            ctx.lineTo(point.x, point.y);
-            ctx.closePath();
-            ctx.stroke();
-            prevX = point.x;
-            prevY = point.y;
-        } else {
-            prevX = point.x;
-            prevY = point.y;
+        postable = document.getElementById("calctable");
+        if (postable) {
+            postable.innerHTML = "";
         }
-        i++;
+
+        var table = [{
+                name: "RealPos",
+                x: myGeo.x,
+                y: myGeo.y
+            },
+            {
+                name: "CalculatedPos",
+                x: geoTotal.x,
+                y: geoTotal.y
+            }
+        ];
+        
+
+        for (const item of table) {
+            addCoords("calctable", item.name, Math.round(item.x), Math.round(item.y));
+        }
+
+
     }
+
 
 
 }
@@ -367,7 +394,7 @@ function moveObj(startPos, i) {
 
     var dx, dy;
     if (myGeo.x < scrW && myGeo.x >= 0 && myGeo.y < scrH && myGeo.y >= 0) {
-        if (points && points[i] && points[i].x != Math.round(startPos.x)) {
+        if (points && points[i] && (Math.round(points[i].x) != Math.round(startPos.x) || Math.round(points[i].y) != Math.round(startPos.y))) {
             dx = points[i].x - startPos.sx;
             dy = points[i].y - startPos.sy;
             startPos.x += dx * 0.01;

@@ -51,8 +51,8 @@ function drawBoard(context, size) {
 }
 
 // receivers coords tab
-function addCoords(rName, rX, rY) {
-    var table = document.getElementById("rtable");
+function addCoords(tablename, rName, rX, rY) {
+    var table = document.getElementById(tablename);
     var row = table.insertRow(0);
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);

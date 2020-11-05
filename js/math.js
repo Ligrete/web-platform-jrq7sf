@@ -57,7 +57,7 @@ function calcMiddle(firstPoint, secondPoint, target) {
 
     var canvas = document.getElementById("canvasmove");
     if (canvas) {
-        var radius = 2;
+        var radius = 3;
         var ctx = canvas.getContext("2d");
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 123, 255, 1)";
