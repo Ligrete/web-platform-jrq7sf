@@ -417,7 +417,7 @@ function moveObj(startPos, i) {
         if (i < points.length) {
             moveObj(myGeo, i);
         }
-    }, 100);
+    }, 200);
 }
 
 
